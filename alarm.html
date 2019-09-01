@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body{
+            background: black;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .timer{
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: center;
+            margin-top: 10%;
+            height: 210px;
+            background: #abc;
+            position: relative;
+            border-radius: 100px;
+        }
+
+        .time{
+            position: absolute;
+            left: 0;
+            right: 0;
+        }
+
+        #set{
+            margin: 5px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="timer">
+        <div class="time">
+            <p><span class="hour">0</span>:<span class="minutes">0</span>:<span class="seconds">0</span> <span class="ampm"></span></p>
+            <h2>Set time for alarm</h2>
+            <input type="time" name="time" value="12:05" id="time"><br>
+            <input type="button" name="set" value="Set" id="set">
+            <p>select and use arrow keys to change time</p>
+        </div>
+    </div>
+
+    <audio src="./audio/alarm.mp3" class="audio"></audio>
+</body>
+<script>
+    let audio = document.querySelector('.audio');
+    let setAlarm = document.querySelector('#set');
+    let time = document.querySelector('#time');
+    let all = document.querySelectorAll('span');
+
+    setInterval(()=>{
+        let now = new Date();
+        let ampm = 'AM';
+        all[2].textContent = now.getSeconds();
+        all[1].textContent = now.getMinutes();
+        let currentHour = ()=>{
+            let h = now.getHours();
+            if(h>12){
+                h -= 12;
+                ampm = 'PM'
+            }
+            return h;
+        }
+        all[0].textContent = currentHour();
+        all[3].textContent = ampm;
+    }, 1000);
+
+
+
+    setAlarm.addEventListener('click', ()=>{
+        time.disabled = true;
+        setInterval(()=>{
+            let now = new Date();
+            let min = now.getMinutes();
+            if(String(min).length == 1){
+                min = '0'+now.getMinutes();
+            }
+            let timeCombined = (now.getHours()+':'+min);
+            if(timeCombined == time.value){
+                audio.play();
+                time.value = 0;
+            }
+        }, 1000);
+    });
+</script>
+</html>
