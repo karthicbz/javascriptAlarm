@@ -40,6 +40,7 @@
             <h2>Set time for alarm</h2>
             <input type="time" name="time" value="12:05" id="time"><br>
             <input type="button" name="set" value="Set" id="set">
+            <input type="button" name="unset" value="Cancel" id="cancel">
             <p>select and use arrow keys to change time</p>
         </div>
     </div>
@@ -51,6 +52,7 @@
     let setAlarm = document.querySelector('#set');
     let time = document.querySelector('#time');
     let all = document.querySelectorAll('span');
+    let cancel = document.querySelector('#cancel');
 
     setInterval(()=>{
         let now = new Date();
@@ -82,9 +84,17 @@
             let timeCombined = (now.getHours()+':'+min);
             if(timeCombined == time.value){
                 audio.play();
+                time.disabled = false;
                 time.value = 0;
             }
         }, 1000);
     });
+
+    cancel.addEventListener('click', ()=>{
+        if(time.disabled == true){
+            time.disabled = false;
+            time.value = 0;
+        }
+    })
 </script>
 </html>
